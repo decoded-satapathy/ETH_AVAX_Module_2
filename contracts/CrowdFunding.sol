@@ -10,13 +10,6 @@ contract CrowdFunding {
     bool public eventEnded;
     mapping(address => uint) public contributionsToTheFund;
 
-    modifier onlyCreator() {
-        require(
-            msg.sender == creator,
-            "You are not the creator of this crowdfund"
-        );
-        _;
-    }
     constructor(string memory _projectName, uint _fundingLimit) {
         creator = msg.sender; //setting the creator as the creator of this smart contract
         projectName = _projectName;
@@ -29,6 +22,14 @@ contract CrowdFunding {
 
     function getProjectName() public view returns (string memory) {
         return projectName;
+    }
+
+    function getCreator() public view returns (address) {
+        return creator;
+    }
+
+    function getFundingLimit() public view returns (uint256) {
+        return fundingLimit;
     }
 
     function contributeToFund() public payable {
@@ -48,16 +49,5 @@ contract CrowdFunding {
             fundingLimitReached = true;
             eventEnded = true;
         }
-    }
-
-    function endEvent() public onlyCreator {
-        require(!eventEnded, "The event has ended already");
-        eventEnded = true;
-    }
-
-    function withDrawFunds() public onlyCreator {
-        require(eventEnded, "The event is still going on");
-        assert(amountRaised > 0);
-        amountRaised = 0;
     }
 }
