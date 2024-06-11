@@ -31,6 +31,14 @@ contract CrowdFunding {
         return projectName;
     }
 
+    function getCreator() public view returns (address) {
+        return creator;
+    }
+
+    function getFundingLimit() public view returns (uint256) {
+        return fundingLimit;
+    }
+
     function contributeToFund() public payable {
         require(!eventEnded, "The event has been ended");
         require(!fundingLimitReached, "The funding limit is reached");
